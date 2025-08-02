@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>darkroom index</title>
+<!-- Favicon -->
+  <link rel="icon" type="image/png" href="icon.png">
+  <link rel="stylesheet" href="style.css?v=35">
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+  <style>
+    #dither-background-canvas {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: none;
+    }
+    #scanline-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none;
+    }
+    #spark-canvas {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="dither-background-canvas"></canvas>
+  <div id="scanline-overlay"></div>
+  <canvas id="spark-canvas"></canvas>
+  <div id="layout">
+    <aside class="dither-box" id="left-column">
+      <section class="section-box">
+        <h2>about</h2>
+        <p>hi! welcome to my web space. I intended this to be a sort of portfolio or a general showcase of stuff I find cool and reflective of me :]</p>
+        <p>hope you enjoy!</p>
+      </section>
+
+      <section class="section-box">
+        <h2>stickerboard</h2>
+        <br> </br>
+        <img src="gifs/winamp.gif" alt="winamp my beloved" width="88" height="31">
+        <img src="gifs/bob.gif" alt="rainbow eyes gif" width="88" height="31">
+        <img src="gifs/bestviewedcomp.gif" alt="slow internet gif" width="88" height="31">
+        <img src="gifs/html.gif" alt="under construction gif" width="88" height="31">
+      </section>
+
+      <section class="section-box">
+        <h2>system.log</h2>
+        <pre>
+[2025-07-31] :: BOOT SEQUENCE COMPLETE
+[2025-07-31] :: SEC-UI SHELL INITIALIZED
+[2025-07-28] :: RENDERER_MODULE::DITHER active
+[2025-07-25] :: SITE ARCHITECTURE ESTABLISHED
+        </pre>
+      </section>
+
+      <section class="section-box last-updated">
+        <p>LAST UPDATED: 2025-08-02</p>
+      </section>
+    </aside>
+    <main class="dither-box" id="center-column">
+      <section class="section-box">
+        <h2>terminal</h2>
+        <div id="terminal-output">
+          <p>Type 'help' for a list of commands.</p>
+          <pre id="terminal-ascii">
+            ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣤⢔⣒⠂⣀⣀⣤⣄⣀⠀⠀
+            ⠀⠀⠀⠀⠀⠀⠀⣴⣿⠋⢠⣟⡼⣷⠼⣆⣼⢇⣿⣄⠱⣄
+            ⠀⠀⠀⠀⠀⠀⠀⠹⣿⡀⣆⠙⠢⠐⠉⠉⣴⣾⣽⢟⡰⠃
+            ⠀⠀⠀⠀⠀⠀⠀⠀⠈⢿⣿⣦⠀⠤⢴⣿⠿⢋⣴⡏⠀⠀
+            ⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡙⠻⣿⣶⣦⣭⣉⠁⣿⠀⠀⠀                             
+            ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣷⠀⠈⠉⠉⠉⠉⠇⡟⠀⠀⠀
+            ⠀⠀⠀⠀⠀⠀⠀⢀⠀⠀⣘⣦⣀⠀⠀⣀⡴⠊⠀⠀⠀⠀
+            ⠀⠀⠀⠀⠀⠀⠀⠈⠙⠛⠛⢻⣿⣿⣿⣿⠻⣧⡀⠀⠀⠀
+            ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠫⣿⠉⠻⣇⠘⠓⠂⠀⠀
+            ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⠀⠀⠀⠀⠀⠀⠀⠀
+            ⠀⢶⣾⣿⣿⣿⣿⣿⣶⣄⠀⠀⠀⣿⠀⠀⠀⠀⠀⠀⠀⠀
+            ⠀⠀⠹⣿⣿⣿⣿⣿⣿⣿⣧⠀⢸⣿⠀⠀⠀⠀⠀⠀⠀⠀
+            ⠀⠀⠀⠈⠙⠻⢿⣿⣿⠿⠛⣄⢸⡇⠀⠀⠀⠀⠀⠀⠀⠀
+            ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀
+            ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⡁⠀⠀⠀⠀⠀⠀⠀⠀
+            ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⠁⠀⠀⠀⠀⠀⠀⠀⠀
+            ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+          </pre>
+        </div>
+        <div id="terminal-input-line">
+          <span id="terminal-prompt"></span>
+          <input type="text" id="terminal-input" autofocus autocomplete="off">
+        </div>
+      </section>
+
+      <section class="section-box">
+        <h2>book.log</h2>
+        <p>⟢ <em>Simuliakrai ir Simuliacija - J. Baudrillard</em></p>
+        <p>⟢ <em>Niekis ir Esmas II – A. Šliogeris</em></p>
+      </section>
+      <section class="section-box">
+        <h2>recent_projects.log</h2>
+        <pre>
+[STATUS: IN_DEV] - PID_03: Neurodynamics
+[STATUS: IN_DEV] - PID_02: Book finder
+[STATUS: DONE] - PID_01: AI emotion recognition
+        </pre>
+      </section>
+    </section>
+    <section class="section-box">
+      <h2>something</h2>
+      <p> <em>blablabla</em></p>
+      <p> <em>lalala</em></p>
+    </section>
+    </main>
+    <aside class="dither-box" id="right-column">
+      <section class="section-box">
+        <h2>fields of interest</h2>
+        <ul>
+          <li><a href="academics.html">academics</a></li>
+          <li><a href="bibliophilia.html">bibliophilia</a></li>
+          <li><a href="writings.html">writings</a></li>
+          <li><a href="photography.html">photography</a></li>
+          <li><a href="editing.html">editing</a></li>
+          <li><a href="???.html">???</a></li>
+        </ul>
+      </section>
+      <section class="section-box">
+        <h2>links</h2>
+        <ul>
+          <li><a href="https://neocities.org">neocities</a></li>
+          <li><a href="https://webrevival.net">web revival</a></li>
+          <li><a href="https://yesterweb.org">yesterweb</a></li>
+        </ul>
+      </section>
+      <section class="section-box">
+        <h2>now playing</h2>
+        <div id="now-playing">loading…</div>
+      </section>
+      
+    </aside>
+  </div>
+  <div id="data-viewer" class="dither-box">
+    <div id="viewer-header">
+      <span id="viewer-title">SECURE_TERMINAL</span>
+      <button id="viewer-close">X</button>
+    </div>
+
+    <div id="viewer-content">
+        <form id="contact-form">
+            <p>Enter message for transmission:</p>
+            <textarea id="message-area" rows="8"></textarea>
+            <button type="submit">-- TRANSMIT --</button>
+        </form>
+    </div>
+  </div>
+  <script type="importmap">
+    { "imports": { "three": "https://unpkg.com/three@0.164.1/build/three.module.js", "three/addons/": "https://unpkg.com/three@0.164.1/examples/jsm/" } }
+  </script>
+
+  <script>
+    const sparkCanvas=document.getElementById("spark-canvas");const sparkCtx=sparkCanvas.getContext("2d");let sparks=[];function resizeSparkCanvas(){sparkCanvas.width=window.innerWidth;sparkCanvas.height=window.innerHeight}
+    window.addEventListener("resize",resizeSparkCanvas);resizeSparkCanvas();document.addEventListener("click",(e)=>{if(e.target.closest("#data-viewer")||e.target.tagName==='BUTTON'||e.target.tagName==='A'||e.target.id==='terminal-input'){return}
+    const count=10;const now=performance.now();const newSparks=Array.from({length:count},(_,i)=>{const angle=(2*Math.PI*i)/count;return{x:e.clientX,y:e.clientY,angle,startTime:now}});sparks.push(...newSparks)});function drawSparks(timestamp){sparkCtx.clearRect(0,0,sparkCanvas.width,sparkCanvas.height);const duration=400;const radius=10;const size=5;sparks=sparks.filter((s)=>{const elapsed=timestamp-s.startTime;if(elapsed>=duration)return false;const t=elapsed/duration;const ease=t*(2-t);const dist=ease*radius;const x1=s.x+dist*Math.cos(s.angle);const y1=s.y+dist*Math.sin(s.angle);const x2=x1+size*(1-t)*Math.cos(s.angle);const y2=y1+size*(1-t)*Math.sin(s.angle);sparkCtx.strokeStyle="#ffccaa";sparkCtx.lineWidth=2;sparkCtx.beginPath();sparkCtx.moveTo(x1,y1);sparkCtx.lineTo(x2,y2);sparkCtx.stroke();return true});requestAnimationFrame(drawSparks)}
+    requestAnimationFrame(drawSparks);
+  </script>
+ 
+<!--dither-->
+
+  <script type="module" id="dither-script">
+    import * as THREE from 'three';
+    import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+    import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+    import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+    const waveVertexShader=`varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`;const waveFragmentShader=`uniform vec2 resolution;uniform float time;uniform float waveSpeed;uniform float waveFrequency;uniform float waveAmplitude;uniform vec3 waveColor;vec4 mod289(vec4 x){return x-floor(x*(1.0/289.0))*289.0;}
+vec4 permute(vec4 x){return mod289(((x*34.0)+1.0)*x);}
+vec4 taylorInvSqrt(vec4 r){return 1.79284291400159-0.85373472095314*r;}
+vec2 fade(vec2 t){return t*t*t*(t*(t*6.0-15.0)+10.0);}
+float cnoise(vec2 P){vec4 Pi=floor(P.xyxy)+vec4(0.0,0.0,1.0,1.0);vec4 Pf=fract(P.xyxy)-vec4(0.0,0.0,1.0,1.0);Pi=mod289(Pi);vec4 ix=Pi.xzxz;vec4 iy=Pi.yyww;vec4 fx=Pf.xzxz;vec4 fy=Pf.yyww;vec4 i=permute(permute(ix)+iy);vec4 gx=fract(i*(1.0/41.0))*2.0-1.0;vec4 gy=abs(gx)-0.5;vec4 tx=floor(gx+0.5);gx=gx-tx;vec2 g00=vec2(gx.x,gy.x);vec2 g10=vec2(gx.y,gy.y);vec2 g01=vec2(gx.z,gy.z);vec2 g11=vec2(gx.w,gy.w);vec4 norm=taylorInvSqrt(vec4(dot(g00,g00),dot(g01,g01),dot(g10,g10),dot(g11,g11)));g00*=norm.x;g01*=norm.y;g10*=norm.z;g11*=norm.w;float n00=dot(g00,vec2(fx.x,fy.x));float n10=dot(g10,vec2(fx.y,fy.y));float n01=dot(g01,vec2(fx.z,fy.z));float n11=dot(g11,vec2(fx.w,fy.w));vec2 fade_xy=fade(Pf.xy);vec2 n_x=mix(vec2(n00,n01),vec2(n10,n11),fade_xy.x);return 2.3*mix(n_x.x,n_x.y,fade_xy.y);}
+const int OCTAVES=4;float fbm(vec2 p){float value=0.0;float amp=1.0;float freq=waveFrequency;for(int i=0;i<OCTAVES;i++){value+=amp*abs(cnoise(p));p*=freq;amp*=waveAmplitude;}
+return value;}
+float pattern(vec2 p){vec2 p2=p-time*waveSpeed;return fbm(p+fbm(p2));}
+void main(){vec2 uv=gl_FragCoord.xy/resolution.xy;uv-=0.5;uv.x*=resolution.x/resolution.y;float f=pattern(uv);vec3 col=mix(vec3(0.0),waveColor,f);gl_FragColor=vec4(col,1.0);}`;const DitherShader={uniforms:{'tDiffuse':{value:null},'colorNum':{value:4.0},'pixelSize':{value:2.0},'resolution':{value:new THREE.Vector2()}},vertexShader:`varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`,fragmentShader:`uniform sampler2D tDiffuse;uniform float colorNum;uniform float pixelSize;uniform vec2 resolution;varying vec2 vUv;const float bayerMatrix8x8[64]=float[](0.0,48.0,12.0,60.0,3.0,51.0,15.0,63.0,32.0,16.0,44.0,28.0,35.0,19.0,47.0,31.0,8.0,56.0,4.0,52.0,11.0,59.0,7.0,55.0,40.0,24.0,36.0,20.0,43.0,27.0,39.0,23.0,2.0,50.0,14.0,62.0,1.0,49.0,13.0,61.0,34.0,18.0,46.0,30.0,33.0,17.0,45.0,29.0,10.0,58.0,6.0,54.0,9.0,57.0,5.0,53.0,42.0,26.0,38.0,22.0,41.0,25.0,37.0,21.0);vec3 dither(vec2 uv,vec3 color){vec2 scaledCoord=floor(uv*resolution/pixelSize);int x=int(mod(scaledCoord.x,8.0));int y=int(mod(scaledCoord.y,8.0));float threshold=(bayerMatrix8x8[y*8+x]/64.0)-0.25;float step=1.0/(colorNum-1.0);color+=threshold*step;float bias=0.2;color=clamp(color-bias,0.0,1.0);return floor(color*(colorNum-1.0)+0.5)/(colorNum-1.0);}
+void main(){vec2 normalizedPixelSize=pixelSize/resolution;vec2 uvPixel=normalizedPixelSize*floor(vUv/normalizedPixelSize);vec4 color=texture2D(tDiffuse,uvPixel);color.rgb=dither(gl_FragCoord.xy,color.rgb);gl_FragColor=color;}`};let scene,camera,renderer,composer,clock;let waveMaterial,ditherPass;function init(){scene=new THREE.Scene();clock=new THREE.Clock();camera=new THREE.OrthographicCamera(-1,1,1,-1,0,1);renderer=new THREE.WebGLRenderer({canvas:document.getElementById('dither-background-canvas'),antialias:true});renderer.setPixelRatio(window.devicePixelRatio);renderer.setSize(window.innerWidth,window.innerHeight);const geometry=new THREE.PlaneGeometry(2,2);waveMaterial=new THREE.ShaderMaterial({vertexShader:waveVertexShader,fragmentShader:waveFragmentShader,uniforms:{time:{value:0},resolution:{value:new THREE.Vector2(window.innerWidth,window.innerHeight)},waveSpeed:{value:0.05},waveFrequency:{value:3.0},waveAmplitude:{value:0.3},waveColor:{value:new THREE.Color(0.6,0.1,0.15)},}});const mesh=new THREE.Mesh(geometry,waveMaterial);scene.add(mesh);composer=new EffectComposer(renderer);const renderPass=new RenderPass(scene,camera);composer.addPass(renderPass);ditherPass=new ShaderPass(DitherShader);ditherPass.uniforms.colorNum.value=4.0;ditherPass.uniforms.pixelSize.value=2.0;ditherPass.uniforms.resolution.value.set(window.innerWidth*window.devicePixelRatio,window.innerHeight*window.devicePixelRatio);composer.addPass(ditherPass);window.addEventListener('resize',onWindowResize);}
+function onWindowResize(){const width=window.innerWidth;const height=window.innerHeight;camera.aspect=width/height;camera.updateProjectionMatrix();renderer.setSize(width,height);composer.setSize(width,height);const dpr=renderer.getPixelRatio();waveMaterial.uniforms.resolution.value.set(width,height);ditherPass.uniforms.resolution.value.set(width*dpr,height*dpr);}
+function animate(){requestAnimationFrame(animate);waveMaterial.uniforms.time.value=clock.getElapsedTime();composer.render();}
+window.setDitherTheme=(color)=>{if(waveMaterial){waveMaterial.uniforms.waveColor.value.set(color);}};
+init();animate();
+  </script>
+  
+  <!-- fuzzy -->
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      await document.fonts.ready;
+      
+      const headers = document.querySelectorAll('.section-box h2');
+      headers.forEach(header => {
+        let canvas = null; let animationFrameId = null;
+        header.addEventListener('mouseover', () => {
+          if (canvas) return;
+          canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d');
+          const hoverIntensity = 0.25;
+          const style = window.getComputedStyle(header); const text = header.textContent; const color = style.getPropertyValue('color');
+          const numericFontSize = parseFloat(style.fontSize); const font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+          const offscreen = document.createElement('canvas'); const offCtx = offscreen.getContext('2d');
+          offCtx.font = font; offCtx.textBaseline = 'alphabetic'; const metrics = offCtx.measureText(text);
+          const textWidth = Math.ceil(metrics.width); const textHeight = Math.ceil(metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent);
+          offscreen.width = textWidth; offscreen.height = textHeight;
+          offCtx.font = font; offCtx.textBaseline = 'top'; offCtx.fillStyle = color; offCtx.fillText(text, 0, 0);
+          canvas.width = textWidth; canvas.height = textHeight;
+          canvas.style.position = 'absolute'; canvas.style.left = '0'; canvas.style.top = '0'; canvas.style.pointerEvents = 'none';
+          header.appendChild(canvas);
+          const fuzzRange = 20;
+          const run = () => {
+            ctx.clearRect( -fuzzRange, -fuzzRange, canvas.width + 2 * fuzzRange, canvas.height + 2 * fuzzRange );
+            for (let j = 0; j < textHeight; j++) {
+              const dx = Math.floor(hoverIntensity * (Math.random() - 0.5) * fuzzRange);
+              ctx.drawImage(offscreen, 0, j, textWidth, 1, dx, j, textWidth, 1);
+            }
+            animationFrameId = window.requestAnimationFrame(run);
+          }; run();
+        });
+        header.addEventListener('mouseout', () => {
+          window.cancelAnimationFrame(animationFrameId);
+          if (canvas) { header.removeChild(canvas); }
+          canvas = null; animationFrameId = null;
+        });
+      });
+    });
+  </script>
+
+<!-- NEW & IMPROVED Main Interactive Script -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+      const termInput    = document.getElementById('terminal-input');
+      const termOutput   = document.getElementById('terminal-output');
+      const termPrompt   = document.getElementById('terminal-prompt');
+      const dataViewer   = document.getElementById('data-viewer');
+      const viewerHeader = document.getElementById('viewer-header');
+      const closeButton  = document.getElementById('viewer-close');
+      const secretLink   = document.querySelector('a[href="???.html"]');
+      const contactForm  = document.getElementById('contact-form');
+  
+      const fileSystem = {
+          type: 'dir', children: {
+            about: { type: 'dir', children: {
+              'bio.txt': { type:'file', content:'hi! im glad to finally have a site of my own. on here you can find all sorts of works and quirks. i hope you enjoy your stay.' },
+            }},
+            projects: { type:'dir', children: {
+              neurodynamics: { type:'dir', children:{
+                'readme.md':   { type:'file', content:'EEG analysis on interdynamics of chaos theory and TDA.' },
+                'status.log':  { type:'file', content:'STATUS: IN_DEV' }
+              }},
+              'book-finder': { type:'dir', children:{
+                'readme.md':   { type:'file', content:'over 9000, or sth' },
+                'status.log':  { type:'file', content:'STATUS: IN_DEV' }
+              }},
+              'ai-emotion-recognition': { type:'dir', children:{
+                'readme.md':   { type:'file', content:'asdf' },
+                'status.log':  { type:'file', content:'STATUS: DONE' }
+              }}
+            }},
+            system: { type:'dir', children:{
+              'security.cfg': { type:'file', content:'ACCESS_POLICY = PUBLIC' },
+              'fragments.txt':     { type:'file', content:'' }
+            }}
+          }
+      };
+
+
+      // Rotate Heraclitus quotes on each load
+      const heraclitusQuotes = [
+        "“Even a soul submerged in sleep is hard at work and helps make something of the world.”",
+        "“The meaning of the river flowing is not that all things are changing so that we cannot encounter them twice but that some things stay the same only by changing.”",
+        "“Fire lives in the death of earth, air lives in the death of fire, water lives in the death of air, and earth in the death of water.”",
+        "“Men are at variance with the one thing with which they are in the most unbroken communion, the reason that administers the whole universe.”",
+        "“He who hears not me but the logos will say: All is one.”"
+      ];
+
+      const randomQuote = heraclitusQuotes[
+        Math.floor(Math.random() * heraclitusQuotes.length)
+      ];
+
+      // Inject into motd.txt
+      fileSystem.children.system.children['fragments.txt'].content = randomQuote;
+
+
+      let currentDirectory = fileSystem;
+      let path = [];
+      let commandHistory = [];
+      let historyIndex = -1;
+  
+      const updatePrompt = () => {
+          const pathString = path.length ? `/${path.join('/')}` : '/';
+          termPrompt.textContent = `[${pathString}]$ `;
+      };
+  
+      const sleep = ms => new Promise(r => setTimeout(r, ms));
+  
+      const handleCommand = async cmd => {
+          const parts = cmd.split(' ').filter(p => p);
+          const command = parts[0], arg = parts[1];
+          const response = document.createElement('p');
+          if (!command) return;
+  
+          switch (command) {
+              case 'help':
+                  response.innerHTML = 
+                    `darkroom OS v1.8 - Command List<br>
+                     - ls: list directory contents<br>
+                     - cd [dir]: change directory<br>
+                     - cat [file]: view file content<br>
+                     - whoami: display user info<br>
+                     - date: show system time<br>
+                     - scan: run a scan<br>
+                     - reboot: reboot the terminal<br>
+                     - clear: clear the terminal`;
+                  break;
+              case 'ls':
+                  response.textContent = Object.keys(currentDirectory.children)
+                    .map(k => currentDirectory.children[k].type==='dir'?`${k}/`:k)
+                    .join('  ') || 'Directory is empty.';
+                  break;
+              case 'cd':
+                  if (!arg) {
+                    currentDirectory = fileSystem;
+                    path = [];
+                  } else if (arg === '..' && path.length) {
+                    path.pop();
+                    currentDirectory = fileSystem;
+                    path.forEach(p => currentDirectory = currentDirectory.children[p]);
+                  } else if (currentDirectory.children[arg]?.type === 'dir') {
+                    currentDirectory = currentDirectory.children[arg];
+                    path.push(arg);
+                  } else {
+                    response.textContent = `cd: no such directory: ${arg}`;
+                  }
+                  updatePrompt();
+                  termOutput.appendChild(response);
+                  return;
+              case 'cat':
+                  if (!arg) {
+                    response.textContent = 'cat: missing file operand';
+                  } else if (currentDirectory.children[arg]?.type==='file') {
+                    response.innerHTML = `<pre>${currentDirectory.children[arg].content}</pre>`;
+                  } else {
+                    response.textContent = `cat: '${arg}': No such file or directory`;
+                  }
+                  break;
+              case 'whoami':
+                  response.textContent = 'nothingness';
+                  break;
+              case 'date':
+                  response.textContent = `System Time: ${
+                    new Date().toLocaleString('en-US',{timeZone:'Europe/Helsinki'})
+                  } (EET)`;
+                  break;
+                  case 'scan': {
+                    const scanOutput = document.createElement('pre');
+                    termOutput.appendChild(scanOutput);
+                    termInput.disabled = true;
+                    const scanChars = ['|', '/', '-', '\\'];
+                    for (let i = 0; i <= 100; i++) {
+                      // build the little bar
+                      const bar = '[' +
+                        '#'.repeat(Math.ceil(i / 4)) +
+                        '-'.repeat(25 - Math.ceil(i / 4)) +
+                        ']';
+                      scanOutput.textContent = `Scanning... ${scanChars[i % scanChars.length]} ${i}% ${bar}`;
+                      termOutput.scrollTop = termOutput.scrollHeight;
+                      await sleep(20);
+                    }
+                    scanOutput.textContent += '\nScan complete. No vulnerabilities found.';
+                    termInput.disabled = false;
+                    termInput.focus();
+                    return;
+                }
+              case 'reboot':
+                  response.textContent = 'Rebooting…';
+                  termOutput.appendChild(response);
+                  await sleep(500);
+                  document.body.style.opacity = '0';
+                  await sleep(500);
+                  location.reload();
+                  return;
+              case 'clear':
+                  termOutput.innerHTML = '';
+                  return;
+              default:
+                  response.textContent = `command not found: ${command}`;
+          }
+  
+          termOutput.appendChild(response);
+      };
+  
+      termInput.addEventListener('keydown', async e => {
+          if (e.key === 'Enter') {
+              const cmd = termInput.value.trim().toLowerCase();
+              if (cmd) {
+                  commandHistory.unshift(cmd);
+                  historyIndex = -1;
+                  const echo = document.createElement('p');
+                  echo.innerHTML = `<span>${termPrompt.textContent}</span>${cmd}`;
+                  termOutput.appendChild(echo);
+                  await handleCommand(cmd);
+              }
+              termInput.value = '';
+              termOutput.scrollTop = termOutput.scrollHeight;
+  
+          } else if (e.key === 'ArrowUp') {
+              e.preventDefault();
+              if (historyIndex < commandHistory.length - 1)
+                termInput.value = commandHistory[++historyIndex];
+          } else if (e.key === 'ArrowDown') {
+              e.preventDefault();
+              if (historyIndex > 0) termInput.value = commandHistory[--historyIndex];
+              else { historyIndex = -1; termInput.value = ''; }
+          } else if (e.key === 'Tab') {
+              e.preventDefault();
+              const parts = termInput.value.trim().split(' ');
+              const last = parts.pop();
+              const matches = Object.keys(currentDirectory.children)
+                                  .filter(i => i.startsWith(last));
+              if (matches.length === 1) {
+                  parts.push(matches[0]);
+                  termInput.value = parts.join(' ') + ' ';
+              } else if (matches.length > 1) {
+                  const list = document.createElement('p');
+                  list.innerHTML = matches.join('  ');
+                  termOutput.appendChild(list);
+              }
+          }
+      });
+  
+      secretLink.addEventListener('click', e => {
+        e.preventDefault();
+        dataViewer.style.display = 'flex';
+      });
+      closeButton.addEventListener('click', () => {
+        dataViewer.style.display = 'none';
+      });
+      contactForm.addEventListener('submit', e => {
+        e.preventDefault();
+        const m = e.target.querySelector('#message-area').value;
+        if (!m) return;
+        e.target.innerHTML = '<p>TRANSMISSION SENT…</p>';
+      });
+  
+      // DRAG LOGIC - FIXED
+      let isDragging=false,offsetX,offsetY;
+      viewerHeader.addEventListener('mousedown',(e)=>{
+        isDragging=true;
+        offsetX=e.clientX-dataViewer.offsetLeft;
+        offsetY=e.clientY-dataViewer.offsetTop;
+        viewerHeader.style.cursor='grabbing';
+        document.body.style.userSelect='none';
+      });
+      document.addEventListener('mousemove',(e)=>{
+        if(!isDragging)return;
+        let newX=e.clientX-offsetX;
+        let newY=e.clientY-offsetY;
+        dataViewer.style.left=newX+'px';
+        dataViewer.style.top=newY+'px';
+      });
+      document.addEventListener('mouseup',()=>{
+        isDragging=false;
+        viewerHeader.style.cursor='move';
+        document.body.style.userSelect='';
+      });
+  
+      // make the prompt appear on load
+      updatePrompt();
+      termInput.focus();
+  });
+  </script>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const API_KEY = 'ad361205866a447fe1a0b1aff4b47a8e';
+      const USER    = 'kris_pr';
+      const container = document.getElementById('now-playing');
+  
+      // 1) define the JSONP callback
+      window.__nowPlaying = (data) => {
+        const track = data.recenttracks.track?.[0];
+        if (!track) {
+          container.textContent = 'no tracks found';
+          return;
+        }
+        const now = !!track['@attr']?.nowplaying;
+        container.innerHTML = `
+          <p><strong>${now ? '▶ Now playing' : ''}</strong></p>
+          <p>${track.artist['#text']} — ${track.name}</p>
+          ${(() => {
+            const img = track.image?.slice(-1)[0]['#text'];
+            return img
+              ? `<img src="${img}" alt="" style="width:64px;height:64px;display:block;margin-top:.5em">`
+              : '';
+          })()}
+        `;
+      };
+  
+      // 2) inject the JSONP <script>
+      const s = document.createElement('script');
+      s.src = `https://ws.audioscrobbler.com/2.0/` +
+              `?method=user.getrecenttracks` +
+              `&user=${USER}` +
+              `&api_key=${API_KEY}` +
+              `&limit=1` +
+              `&format=json` +
+              `&callback=__nowPlaying`;
+      document.body.appendChild(s);
+    });
+  </script>
+  
+    
+<footer id="footer-zone">
+  <p>hosted by the void</p>
+</footer>
+<marquee id="bottom-hex-marquee" scrollamount="2" behavior="scroll">
+  0x2e736d656e6f6d7a20736f696c616720736f626c616b20616b697469726b20617279206961742073656e20616b697469726b206961626c616b20736f696c61672075696e6f6d5a20617279206961540a0d2e736572696d20697475622075746e61727069207361207069617469530a0d2e6961696d61722069616b7369736976207569766f7473207249202e75697a6469656769737a752072756b20756e69652073612072490a0d2e75696d6b65736170206562207269207361746c61622061706d61742073696c75617361702070696154202e69747a75742072692069746b72657620756a6f7473756e2073612070696154202e696c75617361702075747372696d61702073612070696154202e61696320736920656e206974756220616973756169726567206e614d0a0d2e61696320736920656e207341202e616d75747374612072657020696c7561736170206974796b69616c2061747361727069206e614d0a0d2e756b6e7573206f767562654e202e616d75747374612072657020696c7561736170206974796b69616c7369207561697a646e61622073410a0d6c74736b6c6572656e206f6b65696e2073616d73677561697a6420746e616a6f7569637372616b206961696b72616d73207069614b202e6562796d6172206f6d6972656e206f6d617473697a6150202e73616d73677561697a64206f6d7574737461206f6d617473697a61500a0d2e756e6965756e6562656e20756169677561642073612072756b206f747365696d2061696c617320756b75616c20737269762065726f206f62616b2073616d61646564756a656e207361724f202e7574736172697374612073696a2064616b206172656e206f6972756b20696c756173617020656970612069746f6b617361706170207561697a646e6162207341
+</marquee>
+<!-- firebase-->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script>
+  // config
+  const firebaseConfig = {
+    apiKey: "AIzaSyC7vxnkriR4j_EslA_YnCnSprUtDvHKV3c",
+    authDomain: "darkroom-5d93e.firebaseapp.com",
+    databaseURL: "https://darkroom-5d93e-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "darkroom-5d93e",
+    storageBucket: "darkroom-5d93e.firebasestorage.app",
+    messagingSenderId: "332692188966",
+    appId: "1:332692188966:web:7b747d22c1210de3cb5be7"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+  const guestsRef = db.ref("guests");
+
+  const thisGuest = guestsRef.push(true);
+  thisGuest.onDisconnect().remove();
+
+  guestsRef.on("value", (snapshot) => {
+    const count = snapshot.numChildren();
+    const text = `${count} soul${count === 1 ? "" : "s"} browsing this void...`;
+    document.getElementById("guest-count").textContent = text;
+  });
+</script>
+<p id="guest-count" style="opacity:0.2; font-size:0.8rem;">connecting to the void...</p>
+
+</body>
+</html>
