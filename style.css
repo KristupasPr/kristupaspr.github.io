@@ -1,0 +1,272 @@
+/* === style.css === */
+:root {
+  --accent-color: #ff5577;
+  --link-color: #ff99bb;
+  --border-color: #550022;
+  --window-header-bg: #330012;
+  --button-bg: #29000d;
+  --button-border: #77002a;
+  --button-hover-bg: #a00030;
+}
+
+body {
+  background-color: #1a0000;
+  color: #d4b4c6;
+  font-family: 'Courier New', monospace;
+  margin: 0;
+  padding: 0;
+}
+
+#layout {
+  display: flex;
+  justify-content: space-between;
+  padding: 30px 30px 30px;
+  gap: 40px;
+  min-height: 90vh;
+}
+
+.dither-box {
+  background: repeating-linear-gradient(135deg, rgba(30, 10, 15, 0.8), rgba(30, 10, 15, 0.8) 4px, rgba(20, 0, 8, 0.8) 4px, rgba(20, 0, 8, 0.8) 8px);
+  border: 2px solid var(--window-header-bg);
+  box-shadow: 0 0 12px #22000f;
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+#left-column, #right-column { flex: 0.8; }
+#center-column { flex: 2; }
+
+.section-box {
+  background: #0a0008;
+  border: 1px dashed var(--border-color);
+  padding: 15px;
+  color: #e8c8d8;
+}
+
+.section-box h2 {
+  position: relative;
+  margin-top: 0;
+  color: var(--accent-color);
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: color 0.1s linear;
+  display: inline-block;
+}
+
+/* keep the text visible on hover */
+.section-box h2:hover {
+  color: inherit; /* or pick a subtle hover color */
+}
+
+
+ul {
+  list-style: none;
+  padding-left: 20px;
+}
+
+ul li a {
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+/* Link hover tweaks */
+:root {
+  --link-hover-color: #cc4466; /* slightly darker red */
+}
+
+ul li a {
+  transition: color 0.2s ease;
+}
+
+ul li a:hover {
+  color: var(--link-hover-color);
+  text-decoration: none;
+}
+
+ul li a:hover::before {
+  content: ' ▶ ';
+  margin-left: -1em;
+  color: var(--link-hover-color);
+}
+
+
+#scanline-overlay {
+background: repeating-linear-gradient( to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0.2) 3px, rgba(0, 0, 0, 0.2) 4px );
+animation: scanline-scroll 20s linear infinite;
+}
+
+@keyframes scanline-scroll {
+from { background-position: 0 0; }
+to { background-position: 0 100%; }
+}
+
+#terminal-output {
+height: 200px; overflow-y: auto; margin-bottom: 10px; scrollbar-width: thin; scrollbar-color: var(--border-color) #0a0008;
+}
+#terminal-output p { margin: 0 0 5px 0; line-height: 1.2; word-break: break-all; }
+#terminal-input-line { display: flex; align-items: center; }
+#terminal-prompt {
+  margin-right: 8px;
+  color: var(--accent-color);
+  white-space: pre; /* Ensures spacing renders literally */
+}
+#terminal-input {
+background: none; border: none; color: #e8c8d8; font-family: 'VT323', monospace; font-size: 1.1em; flex-grow: 1;
+}
+#terminal-input:focus { outline: none; caret-color: var(--accent-color); }
+
+pre {
+font-family: 'VT323', monospace; font-size: 1.1em; color: #e8c8d8; white-space: pre-wrap; line-height: 1.4;
+}
+
+#data-viewer {
+position: absolute; top: 20%; left: 30%; width: 40%; min-height: 350px; z-index: 100; display: none; flex-direction: column;
+}
+#viewer-header {
+background-color: var(--window-header-bg); padding: 5px 10px; cursor: move; display: flex; justify-content: space-between; align-items: center; user-select: none;
+}
+#viewer-title { color: #e8c8d8; font-weight: bold; }
+#viewer-close {
+background: var(--button-hover-bg); border: 1px solid var(--accent-color); color: #fff; padding: 2px 6px; cursor: pointer;
+}
+#viewer-content {
+padding: 15px; flex-grow: 1; overflow-y: auto; background: #0a0008;
+}
+
+/* NEW: Styles for the contact form and last updated section */
+#contact-form {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+#message-area {
+  flex-grow: 1;
+  background-color: #000;
+  border: 1px dashed var(--border-color);
+  color: #e8c8d8;
+  font-family: 'VT323', monospace;
+  font-size: 1.1em;
+  padding: 10px;
+  resize: none;
+  margin-bottom: 10px;
+}
+#message-area:focus {
+  outline: 1px dashed var(--accent-color);
+}
+#contact-form button {
+    font-family: 'VT323', monospace;
+    background-color: var(--button-bg);
+    border: 1px solid var(--button-border);
+    color: #d4b4c6;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+#contact-form button:hover {
+    background-color: var(--button-hover-bg);
+    color: #fff0f5;
+}
+.last-updated {
+  font-size: 0.9em;
+  color: #8c5a6d;
+}
+#footer-zone {
+  text-align: center;
+  padding: 1rem 0;
+  font-size: 1rem;
+  color: rgba(255, 200, 200, 0.3);
+  font-family: 'VT323', monospace;
+  background: transparent;
+  border-top: 1px dashed rgba(255, 150, 150, 0.2);
+  margin-top: 0.5rem;
+}
+
+#bottom-hex-marquee {
+  width: 100%;
+  font-size: 0.9rem;
+  color: rgba(255, 100, 120, 0.05);
+  font-family: 'VT323', monospace;
+  letter-spacing: 0.1em;
+  text-align: center;
+  white-space: nowrap;
+  margin-bottom: 0.1rem;
+}
+#guest-count {
+  font-family: 'VT323', monospace;
+  color: rgba(255, 150, 150, 0.85);
+  text-align: center;
+  margin-top: 1rem;
+}
+
+
+/* Collapsible section (terminal) */
+#terminal-section .section-toggle {
+  all: unset;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+}
+
+#terminal-section .section-toggle:focus-visible {
+  outline: 2px dashed var(--accent-color);
+  outline-offset: 2px;
+}
+
+#terminal-section .chev {
+  display: inline-block;
+  transition: transform .2s ease;
+}
+
+#terminal-section.is-collapsed .chev {
+  transform: rotate(-90deg);
+}
+
+/* Animated panel height */
+#terminal-section .collapsible-panel {
+  overflow: hidden;
+  height: auto;                  /* JS sets to 0 / scrollHeight */
+  transition: height .28s ease;
+}
+
+/* Reduce bottom padding when collapsed so only the H2 shows */
+#terminal-section.is-collapsed {
+  padding-bottom: 0.5rem;
+}
+
+/* make the title button a positioning context for the fuzzy canvas */
+.section-box h2 .section-toggle {
+  position: relative;
+  display: inline-block;   /* prevents width reflow */
+  font: inherit;           /* because you used all: unset earlier */
+  color: inherit;
+}
+
+/* anchor for the absolute-positioned canvas */
+.section-box h2 .section-toggle,
+.section-box h2 .section-title-text {
+  position: relative;
+  display: inline-block;
+}
+
+
+
+/* Keep the color stable; the fuzz effect handles the look */
+.section-box h2:hover,
+.section-box h2 .section-toggle:hover {
+  color: inherit;
+}
+
+
+/* While fuzz runs, hide the base glyphs so you don't see a double print */
+.fuzzing {
+  color: transparent !important;
+  text-shadow: none !important;
+}
+
+.section-box h2,
+.section-box h2 .section-toggle {
+  line-height: 1; /* stabilize the line box */
+}

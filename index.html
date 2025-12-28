@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>darkroom</title>
+<!-- Favicon -->
+  <link rel="icon" type="image/png" href="icon.png">
+  <link rel="stylesheet" href="style.css?v=35">
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+  <style>
+    #dither-background-canvas {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: none;
+    }
+    #scanline-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none;
+    }
+    #spark-canvas {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="dither-background-canvas"></canvas>
+  <div id="scanline-overlay"></div>
+  <canvas id="spark-canvas"></canvas>
+  <div id="layout">
+    <aside class="dither-box" id="left-column">
+      <section class="section-box">
+        <h2>about</h2>
+        <p>hi! welcome to my web space. I intended this to be a sort of portfolio or a general showcase of stuff I find cool and reflective of me :]</p>
+      </section>
+
+
+      <section class="section-box">
+        <h2>system.log</h2>
+        <pre>
+[2025-07-31] :: BOOT SEQUENCE COMPLETE
+[2025-07-31] :: SEC-UI SHELL INITIALIZED
+[2025-07-28] :: RENDERER_MODULE::DITHER active
+[2025-07-25] :: SITE ARCHITECTURE ESTABLISHED
+        </pre>
+      </section>
+
+      <section class="section-box last-updated">
+        <p>LAST UPDATED: 2025-12-26</p>
+      </section>
+    </aside>
+    <main class="dither-box" id="center-column">
+      <section class="section-box collapsible" id="terminal-section">
+        <h2>
+          <button class="section-toggle"
+                  type="button"
+                  aria-controls="terminal-panel"
+                  aria-expanded="true">
+            terminal <span class="chev">▾</span>
+          </button>
+        </h2>
+      
+        <div id="terminal-panel" class="collapsible-panel">
+          <div id="terminal-output">
+            <p>Type 'help' for a list of commands.</p>
+          </div>
+          <div id="terminal-input-line">
+            <span id="terminal-prompt"></span>
+            <input type="text" id="terminal-input" autofocus autocomplete="off">
+          </div>
+        </div>
+      </section>
+      
+
+
+      <section class="section-box">
+        <h2>recent_projects.log</h2>
+        <pre>
+[STATUS: DONE] - PID_08: University studies tracker [2025]
+[STATUS: DONE] - PID_07: Alpha-stable Lévy noise in Epileptor model [2025]
+[STATUS: DONE] - PID_06: Customizable Stock Signal Terminal [2025]
+[STATUS: IN_DEV] - PID_05: Topo-AR [2025]
+[STATUS: IN_DEV] - PID_04: Chaos and TDA interdynamics in EEG [2025]
+[STATUS: DONE] - PID_03: Book Finder [2024]
+[STATUS: DONE] - PID_02: Stock News Auto-Reporter [2024]
+[STATUS: DONE] - PID_01: AI Emotion Recognition [2022]
+        </pre>
+      </section>
+
+
+      <section class="section-box" id="now-section">
+        <h2>now.log</h2>
+        <p>Being almost half-way through my 3rd year of my bachelor's degree, I'm starting to get a hang of my own research and academic life. Doing all sorts of readings and mini-projects really helped me grasp which sphere of mathematics I see myself in. I plan to keep diving deeper into stochastic analysis and dynamical systems, start talking to a few professors regarding potential thesis ideas and so on.  </p>
+      </section>
+
+
+      <section class="section-box">
+        <h2>book.log</h2>
+        <p>⟢ <em>Simuliakrai ir Simuliacija - J. Baudrillard</em></p>
+        <p>⟢ <em>Pensées – B. Pascal</em></p>
+      </section>
+
+    </main>
+    <aside class="dither-box" id="right-column">
+      <section class="section-box">
+        <h2>fields of interest</h2>
+        <ul>
+          <li><a href="academics.html">academics</a></li>
+          <li><a href="bibliophilia.html">bibliophilia</a></li>
+          <li><a href="writings.html">writings</a></li>
+          <li><a href="photography.html">photography</a></li>
+          <li><a href="editing.html">editing</a></li>
+          <li><a href="certifications.html">certifications</a></li>
+          <li><a href="???.html">???</a></li>
+        </ul>
+      </section>
+      <section class="section-box">
+        <h2>links</h2>
+        <ul>
+          <li><a href="https://www.instagram.com/aquila_aves/">instagram</a></li>
+          <li><a href="https://github.com/KristupasPr">github</a></li>
+          <li><a href="https://kristupaspr.github.io/stable/grades.html">grade.calc</a></li>
+        </ul>
+      </section>
+      <section class="section-box">
+        <h2>now playing</h2>
+        <div id="now-playing">loading…</div>
+      </section>
+      
+      
+      
+
+    </aside>
+  </div>
+  <div id="data-viewer" class="dither-box">
+    <div id="viewer-header">
+      <span id="viewer-title">SECURE_TERMINAL</span>
+      <button id="viewer-close">X</button>
+    </div>
+
+    <div id="viewer-content">
+        <form id="contact-form">
+            <p>Enter message for transmission:</p>
+            <textarea id="message-area" rows="8"></textarea>
+            <button type="submit">-- TRANSMIT --</button>
+        </form>
+    </div>
+  </div>
+  <script type="importmap">
+    { "imports": { "three": "https://unpkg.com/three@0.164.1/build/three.module.js", "three/addons/": "https://unpkg.com/three@0.164.1/examples/jsm/" } }
+  </script>
+
+  <script>
+    const sparkCanvas=document.getElementById("spark-canvas");const sparkCtx=sparkCanvas.getContext("2d");let sparks=[];function resizeSparkCanvas(){sparkCanvas.width=window.innerWidth;sparkCanvas.height=window.innerHeight}
+    window.addEventListener("resize",resizeSparkCanvas);resizeSparkCanvas();document.addEventListener("click",(e)=>{if(e.target.closest("#data-viewer")||e.target.tagName==='BUTTON'||e.target.tagName==='A'||e.target.id==='terminal-input'){return}
+    const count=10;const now=performance.now();const newSparks=Array.from({length:count},(_,i)=>{const angle=(2*Math.PI*i)/count;return{x:e.clientX,y:e.clientY,angle,startTime:now}});sparks.push(...newSparks)});function drawSparks(timestamp){sparkCtx.clearRect(0,0,sparkCanvas.width,sparkCanvas.height);const duration=400;const radius=10;const size=5;sparks=sparks.filter((s)=>{const elapsed=timestamp-s.startTime;if(elapsed>=duration)return false;const t=elapsed/duration;const ease=t*(2-t);const dist=ease*radius;const x1=s.x+dist*Math.cos(s.angle);const y1=s.y+dist*Math.sin(s.angle);const x2=x1+size*(1-t)*Math.cos(s.angle);const y2=y1+size*(1-t)*Math.sin(s.angle);sparkCtx.strokeStyle="#ffccaa";sparkCtx.lineWidth=2;sparkCtx.beginPath();sparkCtx.moveTo(x1,y1);sparkCtx.lineTo(x2,y2);sparkCtx.stroke();return true});requestAnimationFrame(drawSparks)}
+    requestAnimationFrame(drawSparks);
+  </script>
+ 
+<!--dither-->
+
+  <script type="module" id="dither-script">
+    import * as THREE from 'three';
+    const waveVertexShader=`varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`;const waveFragmentShader=`uniform vec2 resolution;uniform vec2 ditherResolution;uniform float time;uniform float waveSpeed;uniform float waveFrequency;uniform float waveAmplitude;uniform vec3 waveColor;uniform float colorNum;uniform float pixelSize;varying vec2 vUv;vec4 mod289(vec4 x){return x-floor(x*(1.0/289.0))*289.0;}
+vec4 permute(vec4 x){return mod289(((x*34.0)+1.0)*x);}vec4 taylorInvSqrt(vec4 r){return 1.79284291400159-0.85373472095314*r;}vec2 fade(vec2 t){return t*t*t*(t*(t*6.0-15.0)+10.0);}float cnoise(vec2 P){vec4 Pi=floor(P.xyxy)+vec4(0.0,0.0,1.0,1.0);vec4 Pf=fract(P.xyxy)-vec4(0.0,0.0,1.0,1.0);Pi=mod289(Pi);vec4 ix=Pi.xzxz;vec4 iy=Pi.yyww;vec4 fx=Pf.xzxz;vec4 fy=Pf.yyww;vec4 i=permute(permute(ix)+iy);vec4 gx=fract(i*(1.0/41.0))*2.0-1.0;vec4 gy=abs(gx)-0.5;vec4 tx=floor(gx+0.5);gx=gx-tx;vec2 g00=vec2(gx.x,gy.x);vec2 g10=vec2(gx.y,gy.y);vec2 g01=vec2(gx.z,gy.z);vec2 g11=vec2(gx.w,gy.w);vec4 norm=taylorInvSqrt(vec4(dot(g00,g00),dot(g01,g01),dot(g10,g10),dot(g11,g11)));g00*=norm.x;g01*=norm.y;g10*=norm.z;g11*=norm.w;float n00=dot(g00,vec2(fx.x,fy.x));float n10=dot(g10,vec2(fx.y,fy.y));float n01=dot(g01,vec2(fx.z,fy.z));float n11=dot(g11,vec2(fx.w,fy.w));vec2 fade_xy=fade(Pf.xy);vec2 n_x=mix(vec2(n00,n01),vec2(n10,n11),fade_xy.x);return 2.3*mix(n_x.x,n_x.y,fade_xy.y);}const int OCTAVES=4;float fbm(vec2 p){float value=0.0;float amp=1.0;float freq=waveFrequency;for(int i=0;i<OCTAVES;i++){value+=amp*abs(cnoise(p));p*=freq;amp*=waveAmplitude;}return value;}float pattern(vec2 p){vec2 p2=p-time*waveSpeed;return fbm(p+fbm(p2));}
+const float bayerMatrix8x8[64]=float[](0.0,48.0,12.0,60.0,3.0,51.0,15.0,63.0,32.0,16.0,44.0,28.0,35.0,19.0,47.0,31.0,8.0,56.0,4.0,52.0,11.0,59.0,7.0,55.0,40.0,24.0,36.0,20.0,43.0,27.0,39.0,23.0,2.0,50.0,14.0,62.0,1.0,49.0,13.0,61.0,34.0,18.0,46.0,30.0,33.0,17.0,45.0,29.0,10.0,58.0,6.0,54.0,9.0,57.0,5.0,53.0,42.0,26.0,38.0,22.0,41.0,25.0,37.0,21.0);vec3 dither(vec2 uv,vec3 color){vec2 scaledCoord=floor(uv*ditherResolution/pixelSize);int x=int(mod(scaledCoord.x,8.0));int y=int(mod(scaledCoord.y,8.0));float threshold=(bayerMatrix8x8[y*8+x]/64.0)-0.25;float step=1.0/(colorNum-1.0);color+=threshold*step;float bias=0.2;color=clamp(color-bias,0.0,1.0);return floor(color*(colorNum-1.0)+0.5)/(colorNum-1.0);}void main(){vec2 normalizedPixelSize=pixelSize/ditherResolution;vec2 uvPixel=normalizedPixelSize*floor(vUv/normalizedPixelSize);vec2 fragCoord=uvPixel*ditherResolution;vec2 uv=fragCoord/resolution;uv-=0.5;uv.x*=resolution.x/resolution.y;float f=pattern(uv);vec3 col=mix(vec3(0.0),waveColor,f);col=dither(gl_FragCoord.xy,col);gl_FragColor=vec4(col,1.0);}`;let scene,camera,renderer;let waveMaterial;let rafId=0;let isPaused=false;let lastFrameTime=null;let elapsedTime=0;function init(){scene=new THREE.Scene();camera=new THREE.OrthographicCamera(-1,1,1,-1,0,1);renderer=new THREE.WebGLRenderer({canvas:document.getElementById('dither-background-canvas'),antialias:true});renderer.setPixelRatio(window.devicePixelRatio);renderer.setSize(window.innerWidth,window.innerHeight);const dpr=renderer.getPixelRatio();const geometry=new THREE.PlaneGeometry(2,2);waveMaterial=new THREE.ShaderMaterial({vertexShader:waveVertexShader,fragmentShader:waveFragmentShader,uniforms:{time:{value:0},resolution:{value:new THREE.Vector2(window.innerWidth,window.innerHeight)},ditherResolution:{value:new THREE.Vector2(window.innerWidth*dpr,window.innerHeight*dpr)},waveSpeed:{value:0.05},waveFrequency:{value:3.0},waveAmplitude:{value:0.3},waveColor:{value:new THREE.Color(0.6,0.1,0.15)},colorNum:{value:4.0},pixelSize:{value:2.0},}});const mesh=new THREE.Mesh(geometry,waveMaterial);scene.add(mesh);window.addEventListener('resize',onWindowResize);}function onWindowResize(){const width=window.innerWidth;const height=window.innerHeight;camera.aspect=width/height;camera.updateProjectionMatrix();renderer.setSize(width,height);const dpr=renderer.getPixelRatio();waveMaterial.uniforms.resolution.value.set(width,height);waveMaterial.uniforms.ditherResolution.value.set(width*dpr,height*dpr);}function tick(now){if(isPaused){return;}if(lastFrameTime===null){lastFrameTime=now;}const delta=(now-lastFrameTime)/1000;lastFrameTime=now;elapsedTime+=delta;waveMaterial.uniforms.time.value=elapsedTime;renderer.render(scene,camera);rafId=requestAnimationFrame(tick);}function startAnimation(){if(rafId){return;}isPaused=false;lastFrameTime=null;rafId=requestAnimationFrame(tick);}function stopAnimation(){isPaused=true;if(rafId){cancelAnimationFrame(rafId);rafId=0;}}document.addEventListener('visibilitychange',()=>{if(document.hidden){stopAnimation();}else{startAnimation();}});window.setDitherTheme=(color)=>{if(waveMaterial){waveMaterial.uniforms.waveColor.value.set(color);}};init();if(document.hidden){stopAnimation();}else{startAnimation();}
+  </script>
+  
+
+  
+  
+  <!-- REWRITTEN & CONSOLIDATED Main Interactive Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- Element References ---
+        const termInput    = document.getElementById('terminal-input');
+        const termOutput   = document.getElementById('terminal-output');
+        const termPrompt   = document.getElementById('terminal-prompt');
+        const dataViewer   = document.getElementById('data-viewer');
+        const viewerHeader = document.getElementById('viewer-header');
+        const closeButton  = document.getElementById('viewer-close');
+        const secretLink   = document.querySelector('a[href="???.html"]');
+        const contactForm  = document.getElementById('contact-form');
+
+
+
+
+// === Title fuzz hover overlay (aligned; replaces base glyphs while active) ===
+// === Title fuzz hover overlay (pixel-aligned; no vertical bump) ===
+        (function () {
+          document.querySelectorAll('.section-box h2').forEach((h2) => {
+            const anchor =
+              h2.querySelector('.section-title-text') ||
+              h2.querySelector('.section-toggle') ||
+              h2;
+
+            // Ensure a positioning context
+            const cs = getComputedStyle(anchor);
+            if (cs.position === 'static') anchor.style.position = 'relative';
+
+            let raf = null, canvas = null, off = null;
+
+            function onEnter() {
+              if (canvas) return;
+
+              // Exact text box of the anchor
+              const range = document.createRange();
+              range.selectNodeContents(anchor);
+              const rect = range.getBoundingClientRect();
+              const parentRect = anchor.getBoundingClientRect();
+              const dx = rect.left - parentRect.left;
+              const dy = rect.top  - parentRect.top;
+
+              const style = getComputedStyle(anchor);
+              const fontSize = parseFloat(style.fontSize);
+              const font  = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+              const text  = anchor.textContent.trim();
+              const color = style.color;
+
+              // Measure using font metrics (prevents vertical jump)
+              const measure = document.createElement('canvas').getContext('2d');
+              measure.font = font;
+              const m = measure.measureText(text);
+              const ascent  = Math.ceil(m.actualBoundingBoxAscent || fontSize * 0.8);
+              const descent = Math.ceil(m.actualBoundingBoxDescent || fontSize * 0.2);
+              const w = Math.max(1, Math.ceil(m.width));
+              const h = Math.max(1, ascent + descent);
+
+              // Paint offscreen with proper baseline
+              off = document.createElement('canvas');
+              off.width = w; off.height = h;
+              const octx = off.getContext('2d');
+              octx.imageSmoothingEnabled = false;
+              octx.font = font;
+              octx.textBaseline = 'alphabetic';
+              octx.fillStyle = color;
+              octx.fillText(text, 0, ascent); // baseline at y = ascent
+
+              // Overlay canvas at the exact text box top-left
+              canvas = document.createElement('canvas');
+              canvas.width = w; canvas.height = h;
+              Object.assign(canvas.style, {
+                position: 'absolute',
+                left: dx + 'px',
+                top:  dy + 'px',
+                pointerEvents: 'none',
+                zIndex: 3,
+                opacity: 1
+              });
+              anchor.appendChild(canvas);
+
+              // Hide base glyphs only while fuzzing
+              anchor.classList.add('fuzzing');
+
+              const ctx = canvas.getContext('2d');
+              ctx.imageSmoothingEnabled = false;
+
+              const fuzzRange = 10;    // px span
+              const intensity = 0.35;  // strength
+
+              const loop = () => {
+                ctx.clearRect(0, 0, w, h);
+                for (let y = 0; y < h; y++) {
+                  const shift = (Math.random() - 0.5) * fuzzRange * intensity;
+                  ctx.drawImage(off, 0, y, w, 1, shift, y, w, 1);
+                }
+                raf = requestAnimationFrame(loop);
+              };
+              loop();
+            }
+
+            function onLeave() {
+              if (raf) cancelAnimationFrame(raf);
+              raf = null;
+              if (canvas) { canvas.remove(); canvas = null; }
+              off = null;
+              anchor.classList.remove('fuzzing');
+            }
+
+            anchor.addEventListener('mouseenter', onEnter);
+            anchor.addEventListener('mouseleave', onLeave);
+          });
+        })();
+
+
+
+        // --- File System ---
+        const fileSystem = {
+            type: 'dir', children: {
+              about: { type: 'dir', children: { 'bio.txt': { type:'file', content:'hi! im glad to finally have a site of my own. on here you can find all sorts of works and quirks. i hope you enjoy your stay.' } } },
+              projects: { type:'dir', children: {
+                neurodynamics: { type:'dir', children:{ 'readme.md':   { type:'file', content:'EEG analysis on interdynamics of chaos theory and TDA.' }, 'status.log':  { type:'file', content:'STATUS: IN_DEV' } }},
+                'book-finder': { type:'dir', children:{ 'readme.md':   { type:'file', content:'over 9000, or sth' }, 'status.log':  { type:'file', content:'STATUS: IN_DEV' } }},
+                'ai-emotion-recognition': { type:'dir', children:{ 'readme.md':   { type:'file', content:'asdf' }, 'status.log':  { type:'file', content:'STATUS: DONE' } }}
+              }},
+              system: { type:'dir', children:{ 'security.cfg': { type:'file', content:'ACCESS_POLICY = PUBLIC' }, 'fragments.txt':     { type:'file', content:'' }, 'status.now': { type:'file', content:"Being almost half-way through my 3rd year of my bachelor's degree, I'm starting to get a hang of my own research and academic life. Doing all sorts of readings and mini-projects really helped me grasp which sphere of mathematics I see myself in. I plan to keep diving deeper into stochastic analysis and dynamical systems, start talking to a few professors regarding potential thesis ideas and so on." } }}
+            }
+        };
+
+        const manPages = {
+          help:  "help — list commands available.", ls:    "ls — list directory contents.\nusage: ls", cd:    "cd — change directory.\nusage: cd [dirname] | cd .. | cd", cat:   "cat — print file contents.\nusage: cat [filename]", whoami:"whoami — print user identity.", date:  "date — show system time (EET).", scan:  "scan — run a visual scan progress.", reboot:"reboot — reload the interface.", clear: "clear — clear the terminal screen.", now:   "now — show this month's focus (same as cat system/status.now)."
+        };
+
+        const heraclitusQuotes = [ "“Even a soul submerged in sleep is hard at work and helps make something of the world.”", "“The meaning of the river flowing is not that all things are changing so that we cannot encounter them twice but that some things stay the same only by changing.”", "“Fire lives in the death of earth, air lives in the death of fire, water lives in the death of air, and earth in the death of water.”", "“Men are at variance with the one thing with which they are in the most unbroken communion, the reason that administers the whole universe.”", "“He who hears not me but the logos will say: All is one.”" ];
+        const randomQuote = heraclitusQuotes[Math.floor(Math.random() * heraclitusQuotes.length)];
+        fileSystem.children.system.children['fragments.txt'].content = randomQuote;
+
+        let currentDirectory = fileSystem; let path = []; let commandHistory = []; let historyIndex = -1;
+    
+        const updatePrompt = () => { const dir = path.length === 0 ? '~' : path.join('/'); termPrompt.textContent = `[/${dir}]$ `; };
+        const sleep = ms => new Promise(r => setTimeout(r, ms));
+    
+        const handleCommand = async cmd => {
+            const [command, arg] = cmd.split(' ');
+            const response = document.createElement('p'); if (!command) return;
+    
+            switch (command) {
+              case 'help': response.innerHTML = `darkroom OS v1.8<br>- ls: list contents<br>- cd [dir]: change directory<br>- cat [file]: view file<br>- whoami, date, scan, reboot, clear, man, now`; break;
+              case 'ls': response.textContent = Object.keys(currentDirectory.children).map(k => currentDirectory.children[k].type === 'dir' ? `${k}/` : k).join('  ') || 'Directory is empty.'; break;
+              case 'cd':
+                if (!arg) { currentDirectory = fileSystem; path = []; }
+                else if (arg === '..' && path.length) { path.pop(); currentDirectory = fileSystem; path.forEach(p => currentDirectory = currentDirectory.children[p]); }
+                else if (currentDirectory.children[arg]?.type === 'dir') { currentDirectory = currentDirectory.children[arg]; path.push(arg); }
+                else { response.textContent = `cd: no such directory: ${arg}`; }
+                updatePrompt(); termOutput.appendChild(response); return;
+              case 'cat':
+                if (!arg) response.textContent = 'cat: missing file operand';
+                else if (currentDirectory.children[arg]?.type === 'file') response.innerHTML = `<pre>${currentDirectory.children[arg].content}</pre>`;
+                else response.textContent = `cat: '${arg}': No such file`;
+                break;
+              case 'whoami': response.textContent = 'nothingness'; break;
+              case 'date': response.textContent = `System Time: ${new Date().toLocaleString('en-US',{timeZone:'Europe/Helsinki'})} (EET)`; break;
+              case 'scan': { const scanOutput = document.createElement('pre'); termOutput.appendChild(scanOutput); termInput.disabled = true; for (let i = 0; i <= 100; i++) { scanOutput.textContent = `Scanning... ${['|','/','-','\\'][i%4]} ${i}%`; termOutput.scrollTop = termOutput.scrollHeight; await sleep(20); } scanOutput.textContent += '\nScan complete.'; termInput.disabled = false; termInput.focus(); return; }
+              case 'reboot': termOutput.innerHTML = '<p>Rebooting…</p>'; await sleep(500); document.body.style.opacity = '0'; await sleep(500); location.reload(); return;
+              case 'clear': termOutput.innerHTML = ''; return;
+              case 'man': { const topic = arg && arg.trim(); if (!topic) { response.innerHTML = `<pre>$ man [command]\n\nAvailable:\n${Object.keys(manPages).sort().join('  ')}</pre>`; } else { const page = manPages[topic]; response.innerHTML = page ? `<pre>${page}</pre>` : `man: no entry for '${topic}'`; } break; }
+              case 'now': { const sys = fileSystem.children.system.children; response.innerHTML = sys['status.now'] ? `<pre>${sys['status.now'].content}</pre>` : 'now: no status set'; break; }
+              default: response.textContent = `command not found: ${command}`;
+            }
+            termOutput.appendChild(response);
+        };
+    
+        termInput.addEventListener('keydown', async e => {
+            if (e.key === 'Enter') {
+              const cmd = termInput.value.trim().toLowerCase();
+              if (cmd) { commandHistory.unshift(cmd); historyIndex = -1; const echo = document.createElement('p'); echo.innerHTML = `<span>${termPrompt.textContent}</span>${cmd}`; termOutput.appendChild(echo); await handleCommand(cmd); }
+              termInput.value = ''; termOutput.scrollTop = termOutput.scrollHeight;
+            } else if (e.key === 'ArrowUp' && historyIndex < commandHistory.length - 1) { historyIndex++; termInput.value = commandHistory[historyIndex]; }
+            else if (e.key === 'ArrowDown') { if (historyIndex > 0) termInput.value = commandHistory[--historyIndex]; else { historyIndex = -1; termInput.value = ''; } }
+            else if (e.key === 'Tab') {
+              e.preventDefault();
+              const parts = termInput.value.trim().split(' '); const last = parts.pop();
+              const matches = Object.keys(currentDirectory.children).filter(i => i.startsWith(last));
+              if (matches.length === 1) { parts.push(matches[0]); termInput.value = parts.join(' ') + ' '; }
+            }
+        });
+    
+        secretLink.addEventListener('click', e => { e.preventDefault(); dataViewer.style.display = 'flex'; });
+        closeButton.addEventListener('click', () => { dataViewer.style.display = 'none'; });
+        contactForm.addEventListener('submit', e => { e.preventDefault(); const m = e.target.querySelector('#message-area').value; if (!m) return; e.target.innerHTML = '<p>TRANSMISSION SENT…</p>'; });
+    
+        let isDragging=false,offsetX,offsetY;
+        viewerHeader.addEventListener('mousedown',(e)=>{isDragging=true;offsetX=e.clientX-dataViewer.offsetLeft;offsetY=e.clientY-dataViewer.offsetTop;viewerHeader.style.cursor='grabbing';});
+        document.addEventListener('mousemove',(e)=>{if(!isDragging)return;let x=e.clientX-offsetX;let y=e.clientY-offsetY;x=Math.max(0,Math.min(x,window.innerWidth-dataViewer.offsetWidth));y=Math.max(0,Math.min(y,window.innerHeight-dataViewer.offsetHeight));dataViewer.style.left=x+'px';dataViewer.style.top=y+'px';});
+        document.addEventListener('mouseup',()=>{isDragging=false;viewerHeader.style.cursor='move';});
+    
+        updatePrompt();
+        termInput.focus();
+
+        // === Collapsible terminal ===
+        const section = document.getElementById('terminal-section'); if (section) { const toggleBtn = section.querySelector('.section-toggle'); const panel = document.getElementById('terminal-panel'); const STORAGE_KEY = 'terminalCollapsed'; function setCollapsed(collapsed, animate = false) { if (animate) { if (!collapsed) { panel.style.display = 'block'; panel.style.height = '0px'; requestAnimationFrame(() => { panel.style.height = panel.scrollHeight + 'px'; }); } else { panel.style.height = panel.scrollHeight + 'px'; requestAnimationFrame(() => { panel.style.height = '0px'; }); } } else { panel.style.height = collapsed ? '0px' : 'auto'; panel.style.display = collapsed ? 'none' : 'block'; } section.classList.toggle('is-collapsed', collapsed); toggleBtn.setAttribute('aria-expanded', (!collapsed).toString()); localStorage.setItem(STORAGE_KEY, collapsed ? '1' : '0'); } panel.addEventListener('transitionend', (e) => { if (e.propertyName !== 'height') return; if (section.classList.contains('is-collapsed')) { panel.style.display = 'none'; } else { panel.style.height = 'auto'; } }); toggleBtn.addEventListener('click', () => { const next = !section.classList.contains('is-collapsed'); setCollapsed(next, true); if (!next) { const input = document.getElementById('terminal-input'); if (input) setTimeout(() => input.focus(), 250); } }); const saved = localStorage.getItem(STORAGE_KEY) === '1'; if (saved) { section.classList.add('is-collapsed'); toggleBtn.setAttribute('aria-expanded', 'false'); panel.style.height = '0px'; panel.style.display = 'none'; } else { toggleBtn.setAttribute('aria-expanded', 'true'); panel.style.height = 'auto'; } }
+
+        // === Last.fm Integration ===
+        const API_KEY = 'ad361205866a447fe1a0b1aff4b47a8e'; const USER    = 'kris_pr'; const container = document.getElementById('now-playing'); window.__nowPlaying = (data) => { const track = data.recenttracks.track?.[0]; if (!track) { container.textContent = 'no tracks found'; return; } const now = !!track['@attr']?.nowplaying; container.innerHTML = `<p><strong>${now ? '▶ Now playing' : ''}</strong></p><p>${track.artist['#text']} — ${track.name}</p>${(() => { const img = track.image?.slice(-1)[0]['#text']; return img ? `<img src="${img}" alt="" style="width:64px;height:64px;display:block;margin-top:.5em">` : ''; })()}`; }; const s = document.createElement('script'); s.src = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${USER}&api_key=${API_KEY}&limit=1&format=json&callback=__nowPlaying`; document.body.appendChild(s);
+    });
+  </script>
+
+
+  
+
+
+
+
+</body>
+</html>
