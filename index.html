@@ -24,25 +24,34 @@
   <canvas id="dither-background-canvas"></canvas>
   <div id="scanline-overlay"></div>
   <canvas id="spark-canvas"></canvas>
+  <div id="scan-visual" aria-hidden="true">
+    <div class="scan-grid"></div>
+    <div class="scan-sweep"></div>
+    <div class="scan-glow"></div>
+    <div id="scan-text"></div>
+  </div>
   <div id="layout">
     <aside class="dither-box" id="left-column">
-      <section class="section-box">
+      <section class="section-box about-section">
         <h2>about</h2>
-        <p>hi! welcome to my web space. I intended this to be a sort of portfolio or a general showcase of stuff I find cool and reflective of me :]</p>
+        <p class="about-lede">hi! welcome to my web space.</p>
+        <p class="about-body">I intended this to be a sort of portfolio or a general showcase of stuff I find cool and reflective of me :]</p>
       </section>
 
 
-      <section class="section-box">
-        <h2>system.log</h2>
-        <pre>
-math/
-├─ stochastic_analysis/
-├─ probability_theory/
-├─ differential_equations/
-├─ machine_learning/
-├─ computational_methods/
-└─ mathematical_statistics/
-        </pre>
+      <section class="section-box system-log">
+        <h2>research.log</h2>
+        <div class="tree-view">
+          <div class="tree-root">math/</div>
+          <ul class="tree-branches">
+            <li>stochastic_analysis</li>
+            <li>probability_theory</li>
+            <li>differential_equations</li>
+            <li>machine_learning</li>
+            <li>computational_methods</li>
+            <li>mathematical_statistics</li>
+          </ul>
+        </div>
       </section>
 
       <section class="section-box last-updated">
@@ -73,18 +82,18 @@ math/
       
 
 
-      <section class="section-box">
+      <section class="section-box recent-projects">
         <h2>recent_projects.log</h2>
-        <pre>
-[STATUS: DONE] - PID_09: Invoice & Accounting Automation Pipeline [2026]
-[STATUS: DONE] - PID_08: University studies tracker [2025]
-[STATUS: DONE] - PID_07: Alpha-stable Lévy noise in Epileptor model [2025]
-[STATUS: DONE] - PID_06: Customizable Stock Signal Terminal [2025]
-[STATUS: IN_DEV] - PID_05: Topo-AR [2025]
-[STATUS: IN_DEV] - PID_04: Chaos and TDA interdynamics in EEG [2025]
-[STATUS: DONE] - PID_03: Book Finder [2024]
-[STATUS: DONE] - PID_02: Stock News Auto-Reporter [2024]
-[STATUS: DONE] - PID_01: AI Emotion Recognition [2022]
+        <pre class="project-log">
+<span class="proj-status done">[STATUS: DONE]</span> - <span class="proj-id">PID_09</span>: <span class="proj-name">Invoice &amp; Accounting Automation Pipeline</span> <span class="proj-year">[2026]</span>
+<span class="proj-status done">[STATUS: DONE]</span> - <span class="proj-id">PID_08</span>: <span class="proj-name">University studies tracker</span> <span class="proj-year">[2025]</span>
+<span class="proj-status done">[STATUS: DONE]</span> - <span class="proj-id">PID_07</span>: <span class="proj-name">Alpha-stable Lévy noise in Epileptor model</span> <span class="proj-year">[2025]</span>
+<span class="proj-status done">[STATUS: DONE]</span> - <span class="proj-id">PID_06</span>: <span class="proj-name">Customizable Stock Signal Terminal</span> <span class="proj-year">[2025]</span>
+<span class="proj-status in-dev">[STATUS: IN_DEV]</span> - <span class="proj-id">PID_05</span>: <span class="proj-name">Topo-AR</span> <span class="proj-year">[2025]</span>
+<span class="proj-status in-dev">[STATUS: IN_DEV]</span> - <span class="proj-id">PID_04</span>: <span class="proj-name">Chaos and TDA interdynamics in EEG</span> <span class="proj-year">[2025]</span>
+<span class="proj-status done">[STATUS: DONE]</span> - <span class="proj-id">PID_03</span>: <span class="proj-name">Book Finder</span> <span class="proj-year">[2024]</span>
+<span class="proj-status done">[STATUS: DONE]</span> - <span class="proj-id">PID_02</span>: <span class="proj-name">Stock News Auto-Reporter</span> <span class="proj-year">[2024]</span>
+<span class="proj-status done">[STATUS: DONE]</span> - <span class="proj-id">PID_01</span>: <span class="proj-name">AI Emotion Recognition</span> <span class="proj-year">[2022]</span>
         </pre>
       </section>
 
@@ -97,8 +106,8 @@ math/
 
       <section class="section-box">
         <h2>book.log</h2>
-        <p>⟢ <em>Simuliakrai ir Simuliacija - J. Baudrillard</em></p>
-        <p>⟢ <em>Pensées – B. Pascal</em></p>
+        <p>⟢ Simuliakrai ir Simuliacija - J. Baudrillard</p>
+        <p>⟢ Pensées – B. Pascal</p>
       </section>
 
     </main>
@@ -112,7 +121,6 @@ math/
           <li><a href="photography.html">photography</a></li>
           <li><a href="editing.html">editing</a></li>
           <li><a href="certifications.html">certifications</a></li>
-          <li><a href="???.html">???</a></li>
         </ul>
       </section>
       <section class="section-box">
@@ -120,7 +128,7 @@ math/
         <ul>
           <li><a href="https://www.instagram.com/aquila_aves/">instagram</a></li>
           <li><a href="https://github.com/KristupasPr">github</a></li>
-          <li><a href="https://kristupaspr.github.io/stable/grade-calc.html">grade.calc</a></li>
+          <li><a href="https://kristupaspr.github.io/stable/grades.html">grade.calc</a></li>
         </ul>
       </section>
       <section class="section-box">
@@ -133,27 +141,13 @@ math/
 
     </aside>
   </div>
-  <div id="data-viewer" class="dither-box">
-    <div id="viewer-header">
-      <span id="viewer-title">SECURE_TERMINAL</span>
-      <button id="viewer-close">X</button>
-    </div>
-
-    <div id="viewer-content">
-        <form id="contact-form">
-            <p>Enter message for transmission:</p>
-            <textarea id="message-area" rows="8"></textarea>
-            <button type="submit">-- TRANSMIT --</button>
-        </form>
-    </div>
-  </div>
   <script type="importmap">
     { "imports": { "three": "https://unpkg.com/three@0.164.1/build/three.module.js", "three/addons/": "https://unpkg.com/three@0.164.1/examples/jsm/" } }
   </script>
 
   <script>
     const sparkCanvas=document.getElementById("spark-canvas");const sparkCtx=sparkCanvas.getContext("2d");let sparks=[];function resizeSparkCanvas(){sparkCanvas.width=window.innerWidth;sparkCanvas.height=window.innerHeight}
-    window.addEventListener("resize",resizeSparkCanvas);resizeSparkCanvas();document.addEventListener("click",(e)=>{if(e.target.closest("#data-viewer")||e.target.tagName==='BUTTON'||e.target.tagName==='A'||e.target.id==='terminal-input'){return}
+    window.addEventListener("resize",resizeSparkCanvas);resizeSparkCanvas();document.addEventListener("click",(e)=>{if(e.target.tagName==='BUTTON'||e.target.tagName==='A'||e.target.id==='terminal-input'){return}
     const count=10;const now=performance.now();const newSparks=Array.from({length:count},(_,i)=>{const angle=(2*Math.PI*i)/count;return{x:e.clientX,y:e.clientY,angle,startTime:now}});sparks.push(...newSparks)});function drawSparks(timestamp){sparkCtx.clearRect(0,0,sparkCanvas.width,sparkCanvas.height);const duration=400;const radius=10;const size=5;sparks=sparks.filter((s)=>{const elapsed=timestamp-s.startTime;if(elapsed>=duration)return false;const t=elapsed/duration;const ease=t*(2-t);const dist=ease*radius;const x1=s.x+dist*Math.cos(s.angle);const y1=s.y+dist*Math.sin(s.angle);const x2=x1+size*(1-t)*Math.cos(s.angle);const y2=y1+size*(1-t)*Math.sin(s.angle);sparkCtx.strokeStyle="#ffccaa";sparkCtx.lineWidth=2;sparkCtx.beginPath();sparkCtx.moveTo(x1,y1);sparkCtx.lineTo(x2,y2);sparkCtx.stroke();return true});requestAnimationFrame(drawSparks)}
     requestAnimationFrame(drawSparks);
   </script>
@@ -177,11 +171,7 @@ const float bayerMatrix8x8[64]=float[](0.0,48.0,12.0,60.0,3.0,51.0,15.0,63.0,32.
         const termInput    = document.getElementById('terminal-input');
         const termOutput   = document.getElementById('terminal-output');
         const termPrompt   = document.getElementById('terminal-prompt');
-        const dataViewer   = document.getElementById('data-viewer');
-        const viewerHeader = document.getElementById('viewer-header');
-        const closeButton  = document.getElementById('viewer-close');
-        const secretLink   = document.querySelector('a[href="???.html"]');
-        const contactForm  = document.getElementById('contact-form');
+        const scanText     = document.getElementById('scan-text');
 
 
 
@@ -314,6 +304,7 @@ const float bayerMatrix8x8[64]=float[](0.0,48.0,12.0,60.0,3.0,51.0,15.0,63.0,32.
         const handleCommand = async cmd => {
             const [command, arg] = cmd.split(' ');
             const response = document.createElement('p'); if (!command) return;
+            response.classList.add('term-response');
     
             switch (command) {
               case 'help': response.innerHTML = `darkroom OS v1.8<br>- ls: list contents<br>- cd [dir]: change directory<br>- cat [file]: view file<br>- whoami, date, scan, reboot, clear, man, now`; break;
@@ -322,21 +313,55 @@ const float bayerMatrix8x8[64]=float[](0.0,48.0,12.0,60.0,3.0,51.0,15.0,63.0,32.
                 if (!arg) { currentDirectory = fileSystem; path = []; }
                 else if (arg === '..' && path.length) { path.pop(); currentDirectory = fileSystem; path.forEach(p => currentDirectory = currentDirectory.children[p]); }
                 else if (currentDirectory.children[arg]?.type === 'dir') { currentDirectory = currentDirectory.children[arg]; path.push(arg); }
-                else { response.textContent = `cd: no such directory: ${arg}`; }
+                else { response.textContent = `cd: no such directory: ${arg}`; response.classList.add('term-error'); }
                 updatePrompt(); termOutput.appendChild(response); return;
               case 'cat':
-                if (!arg) response.textContent = 'cat: missing file operand';
+                if (!arg) { response.textContent = 'cat: missing file operand'; response.classList.add('term-error'); }
                 else if (currentDirectory.children[arg]?.type === 'file') response.innerHTML = `<pre>${currentDirectory.children[arg].content}</pre>`;
-                else response.textContent = `cat: '${arg}': No such file`;
+                else { response.textContent = `cat: '${arg}': No such file`; response.classList.add('term-error'); }
                 break;
               case 'whoami': response.textContent = 'nothingness'; break;
               case 'date': response.textContent = `System Time: ${new Date().toLocaleString('en-US',{timeZone:'Europe/Helsinki'})} (EET)`; break;
-              case 'scan': { const scanOutput = document.createElement('pre'); termOutput.appendChild(scanOutput); termInput.disabled = true; for (let i = 0; i <= 100; i++) { scanOutput.textContent = `Scanning... ${['|','/','-','\\'][i%4]} ${i}%`; termOutput.scrollTop = termOutput.scrollHeight; await sleep(20); } scanOutput.textContent += '\nScan complete.'; termInput.disabled = false; termInput.focus(); return; }
+              case 'scan': {
+                const scanOutput = document.createElement('pre');
+                scanOutput.classList.add('term-scan');
+                termOutput.appendChild(scanOutput);
+                termInput.disabled = true;
+                document.body.classList.add('scan-active');
+                if (scanText) scanText.textContent = 'SCANNING... 0%';
+                const spinner = ['⠁','⠂','⠄','⡀','⢀','⠠','⠐','⠈'];
+                const barWidth = 20;
+                const steps = '▏▎▍▌▋▊▉█';
+                for (let i = 0; i <= 100; i++) {
+                  const progress = (i / 100) * barWidth;
+                  const whole = Math.floor(progress);
+                  const frac = progress - whole;
+                  let bar = '';
+                  if (whole >= barWidth) {
+                    bar = '█'.repeat(barWidth);
+                  } else {
+                    const stepIndex = Math.max(0, Math.floor(frac * steps.length));
+                    const smoothBlock = stepIndex > 0 ? steps[stepIndex] : '';
+                    const padding = barWidth - whole - (smoothBlock ? 1 : 0);
+                    bar = `${'█'.repeat(whole)}${smoothBlock}${' '.repeat(padding)}`;
+                  }
+                  scanOutput.textContent = `[SCAN] ${spinner[i % spinner.length]} [${bar}] ${i}%`;
+                  if (scanText) scanText.textContent = `SCANNING... ${i}%`;
+                  termOutput.scrollTop = termOutput.scrollHeight;
+                  await sleep(20);
+                }
+                scanOutput.textContent += '\nScan complete.';
+                if (scanText) scanText.textContent = 'SCAN COMPLETE';
+                setTimeout(() => { document.body.classList.remove('scan-active'); if (scanText) scanText.textContent = ''; }, 600);
+                termInput.disabled = false;
+                termInput.focus();
+                return;
+              }
               case 'reboot': termOutput.innerHTML = '<p>Rebooting…</p>'; await sleep(500); document.body.style.opacity = '0'; await sleep(500); location.reload(); return;
               case 'clear': termOutput.innerHTML = ''; return;
-              case 'man': { const topic = arg && arg.trim(); if (!topic) { response.innerHTML = `<pre>$ man [command]\n\nAvailable:\n${Object.keys(manPages).sort().join('  ')}</pre>`; } else { const page = manPages[topic]; response.innerHTML = page ? `<pre>${page}</pre>` : `man: no entry for '${topic}'`; } break; }
+              case 'man': { const topic = arg && arg.trim(); if (!topic) { response.innerHTML = `<pre>$ man [command]\n\nAvailable:\n${Object.keys(manPages).sort().join('  ')}</pre>`; } else { const page = manPages[topic]; if (page) { response.innerHTML = `<pre>${page}</pre>`; } else { response.textContent = `man: no entry for '${topic}'`; response.classList.add('term-error'); } } break; }
               case 'now': { const sys = fileSystem.children.system.children; response.innerHTML = sys['status.now'] ? `<pre>${sys['status.now'].content}</pre>` : 'now: no status set'; break; }
-              default: response.textContent = `command not found: ${command}`;
+              default: response.textContent = `command not found: ${command}`; response.classList.add('term-error');
             }
             termOutput.appendChild(response);
         };
@@ -344,7 +369,7 @@ const float bayerMatrix8x8[64]=float[](0.0,48.0,12.0,60.0,3.0,51.0,15.0,63.0,32.
         termInput.addEventListener('keydown', async e => {
             if (e.key === 'Enter') {
               const cmd = termInput.value.trim().toLowerCase();
-              if (cmd) { commandHistory.unshift(cmd); historyIndex = -1; const echo = document.createElement('p'); echo.innerHTML = `<span>${termPrompt.textContent}</span>${cmd}`; termOutput.appendChild(echo); await handleCommand(cmd); }
+              if (cmd) { commandHistory.unshift(cmd); historyIndex = -1; const echo = document.createElement('p'); echo.classList.add('term-echo'); echo.innerHTML = `<span class="term-prompt-text">${termPrompt.textContent}</span><span class="term-command">${cmd}</span>`; termOutput.appendChild(echo); await handleCommand(cmd); }
               termInput.value = ''; termOutput.scrollTop = termOutput.scrollHeight;
             } else if (e.key === 'ArrowUp' && historyIndex < commandHistory.length - 1) { historyIndex++; termInput.value = commandHistory[historyIndex]; }
             else if (e.key === 'ArrowDown') { if (historyIndex > 0) termInput.value = commandHistory[--historyIndex]; else { historyIndex = -1; termInput.value = ''; } }
@@ -355,15 +380,6 @@ const float bayerMatrix8x8[64]=float[](0.0,48.0,12.0,60.0,3.0,51.0,15.0,63.0,32.
               if (matches.length === 1) { parts.push(matches[0]); termInput.value = parts.join(' ') + ' '; }
             }
         });
-    
-        secretLink.addEventListener('click', e => { e.preventDefault(); dataViewer.style.display = 'flex'; });
-        closeButton.addEventListener('click', () => { dataViewer.style.display = 'none'; });
-        contactForm.addEventListener('submit', e => { e.preventDefault(); const m = e.target.querySelector('#message-area').value; if (!m) return; e.target.innerHTML = '<p>TRANSMISSION SENT…</p>'; });
-    
-        let isDragging=false,offsetX,offsetY;
-        viewerHeader.addEventListener('mousedown',(e)=>{isDragging=true;offsetX=e.clientX-dataViewer.offsetLeft;offsetY=e.clientY-dataViewer.offsetTop;viewerHeader.style.cursor='grabbing';});
-        document.addEventListener('mousemove',(e)=>{if(!isDragging)return;let x=e.clientX-offsetX;let y=e.clientY-offsetY;x=Math.max(0,Math.min(x,window.innerWidth-dataViewer.offsetWidth));y=Math.max(0,Math.min(y,window.innerHeight-dataViewer.offsetHeight));dataViewer.style.left=x+'px';dataViewer.style.top=y+'px';});
-        document.addEventListener('mouseup',()=>{isDragging=false;viewerHeader.style.cursor='move';});
     
         updatePrompt();
         termInput.focus();
